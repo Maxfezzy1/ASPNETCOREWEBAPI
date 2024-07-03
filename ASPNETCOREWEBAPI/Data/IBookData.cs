@@ -1,0 +1,26 @@
+﻿using ASPNETCOREWEBAPI.Entities;
+
+namespace ASPNETCOREWEBAPI.Data
+
+{
+    public interface IBookData
+    {
+        IEnumerable<Book> ListBooks();
+        Task<IEnumerable<Book>> ListBooksAsync();
+
+        Book? GetBook(int id);
+        Task<Book?> GetBookAsync(int id);
+
+        Book UpdateBook(Book book);
+        Book AddBook(Book book);
+
+        Task<int> saveAsync<T>(T obj);
+
+        Task<bool> DeleteAsync<T>(T obj);
+
+        int Save();
+        object UpdateBook(object book);
+    }
+
+
+}
