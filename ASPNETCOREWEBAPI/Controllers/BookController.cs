@@ -179,12 +179,12 @@ namespace ASPNETCOREWEBAPI.Controllers
             try
             {
                 var bookToDelete = await _bookService.GetBookAsync(id);
-                if(bookToDelete == null)
+                if (bookToDelete == null)
                 {
                     return NotFound($"book with id, {id} cannot be found");
                 }
-                
-               var result = await _bookService.DeleteAsync<Book>(bookToDelete);
+
+                var result = await _bookService.DeleteAsync<Book>(bookToDelete);
                 if (result == true)
                 {
                     return Ok("Deleted Successfully");
@@ -202,7 +202,20 @@ namespace ASPNETCOREWEBAPI.Controllers
 
         }
 
-
+        [HttpGet("search-books/{keyword}")]
+        public IActionResult SearchBooks([FromRoute] string keyword)
+        {
+            try
+            {
+                var books = _bookService.Search(keyword);
+                
+                return Ok(books);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
 
     }
 }

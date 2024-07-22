@@ -92,12 +92,22 @@ namespace ASPNETCOREWEBAPI.Data
             throw new NotImplementedException();
         }
 
+        public object Search(string keyword)
+        {
+            throw new NotImplementedException();
+        }
+
         public Book UpdateBook(Book book)
         {
             throw new NotImplementedException();
         }
 
         public object UpdateBook(object book)
+        {
+            throw new NotImplementedException();
+        }
+
+        IEnumerable<Book> IBookData.Search(string keyword)
         {
             throw new NotImplementedException();
         }
