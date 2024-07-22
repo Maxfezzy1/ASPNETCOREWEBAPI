@@ -44,7 +44,7 @@ namespace ASPNETCOREWEBAPI.Data
         public IEnumerable<Book> ListBooks()
         {
 
-            var books = _context.Books.ToList();
+            var books = GetAll().ToList();
             return books;
 
         }
@@ -60,14 +60,14 @@ namespace ASPNETCOREWEBAPI.Data
 
             int saved = _context.SaveChanges();
             return saved;
-          // return _context.SaveChanges();
-            
+            // return _context.SaveChanges();
+
         }
 
         public async Task<int> SaveAsync<T>(T obj)
         {
             var addedEntity = _context.Add(obj);
-            if(await _context.SaveChangesAsync() >  -1 )
+            if (await _context.SaveChangesAsync() > -1)
             {
                 return Convert.ToInt32(addedEntity.Property("Id").CurrentValue);
             }
@@ -77,7 +77,7 @@ namespace ASPNETCOREWEBAPI.Data
         public async Task<int> saveAsync<T>(T obj)
         {
             var addedEntity = _context.Add(obj);
-            if(await _context.SaveChangesAsync() > -1)
+            if (await _context.SaveChangesAsync() > -1)
             {
                 return Convert.ToInt32(addedEntity.Property("Id").CurrentValue);
             }
@@ -86,7 +86,7 @@ namespace ASPNETCOREWEBAPI.Data
 
         public Book UpdateBook(Book book)
         {
-           var entity = _context.Books.Attach(book);
+            var entity = _context.Books.Attach(book);
             entity.State = EntityState.Modified;
             return book;
         }
@@ -95,5 +95,27 @@ namespace ASPNETCOREWEBAPI.Data
         {
             throw new NotImplementedException();
         }
+        public IQueryable<Book> GetAll()
+        {
+            return _context.Books.AsQueryable();
+        }
+        public IEnumerable<Book> Search(string keyword)
+        {
+            keyword = keyword.ToLower();
+            return GetAll().Where(b =>
+            b.Author.ToLower() == keyword ||
+            b.Publisher.ToLower() == keyword ||
+            b.Title.ToLower() == keyword ||
+            b.ISBN.ToLower() == keyword ||
+            b.Description.ToLower() == keyword ||
+            b.Author.ToLower().Contains(keyword) ||
+            b.Publisher.ToLower().Contains(keyword) ||
+            b.Title.ToLower().Contains(keyword) ||
+            b.ISBN.ToLower().Contains(keyword) ||
+            b.Description.ToLower().Contains(keyword));
+
+        }
+
+
     }
 }
